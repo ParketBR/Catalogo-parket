@@ -1,0 +1,191 @@
+/* ─────────────────────────────────────────────────────────────
+   Piso de madeira — detalhamento dos 16 desenhos de escolha.
+   ───────────────────────────────────────────────────────────── */
+/* ── detalhamento ─────────────────────────────────────────
+   Os desenhos saem do mesmo DXF de obra: todos são a MESMA seção
+   — contrapiso, cola, assoalho — com uma única coisa mudando. A
+   tela é montada para deixar isso à vista: a pilha de camadas
+   fica ao lado e acende a camada em que o detalhe mexe.
+   ───────────────────────────────────────────────────────── */
+/* esta página não tem mais abertura com título: dela sobrou a
+   migalha, que precisa do recuo do cabeçalho fixo mas não do
+   respiro que separava título e primeira seção */
+.abertura.so-migalha{padding-block:var(--s-11) var(--s-2)}
+
+.detalhe{padding-block:var(--s-9) var(--s-10);border-top:1px solid var(--linha)}
+/* h1 aqui, e não h2: com a abertura removida este virou o título de
+   primeiro nível da página */
+.detalhe h1{
+  font-weight:var(--peso-titulo); line-height:1.06; letter-spacing:var(--ls-titulo);
+  font-size:clamp(var(--text-h3), 4.4vw, var(--text-h1));
+  margin-block:var(--s-3) var(--s-3); max-width:24ch;
+}
+.detalhe .lead{color:var(--apagado);max-width:56ch;
+  font-size:clamp(var(--text-body),1.5vw,var(--text-body-lg))}
+
+/* o que não vira prancha aqui — paginação e ponto de partida são
+   decisão de planta, e já foram resolvidos acima. Ficam em texto,
+   recuados atrás de um fio, para o índice guardar só o que é corte */
+.detalhe .fora{
+  max-width:56ch; margin-top:var(--s-4);
+  padding-left:var(--s-3); border-left:1px solid var(--linha);
+  color:var(--apagado); font-size:var(--text-small); line-height:1.6;
+}
+.detalhe .fora a{
+  color:var(--madeira); text-decoration:none;
+  border-bottom:1px solid color-mix(in srgb, var(--madeira) 40%, transparent);
+  transition:border-color var(--dur) var(--ease);
+}
+.detalhe .fora a:hover{border-bottom-color:var(--madeira)}
+
+/* Três peças em áreas nomeadas: no desktop o índice e a pilha
+   dividem a coluna estreita; no toque a prancha sobe para logo
+   depois do índice e a pilha fecha embaixo, como legenda. */
+.tec{
+  display:grid;
+  grid-template-columns:minmax(0,.42fr) minmax(0,1fr);
+  grid-template-areas:"amb vis" "idx vis" "esc vis" "pil vis";
+  gap:var(--s-5) var(--s-7); margin-top:var(--s-9); align-items:start;
+}
+.tec-col{display:contents}
+.ambientes{grid-area:amb}
+.tec-idx{grid-area:idx}
+.tec-vis{grid-area:vis}
+.escopo{grid-area:esc}
+.pilha{grid-area:pil}
+
+/* índice — a ordem é a da LISTA BIBLIOTECA; a numeração dela fica
+   nos dados e no alt de cada prancha, fora da tela */
+.tec-idx{display:grid;gap:0}
+.grupo{
+  all:unset; cursor:pointer; display:flex; gap:var(--s-2); align-items:baseline;
+  padding:var(--s-2) 0; border-bottom:1px solid var(--linha); color:var(--apagado);
+  transition:color var(--dur) var(--ease), padding-left var(--dur) var(--ease);
+}
+.grupo:hover{color:var(--tinta);padding-left:var(--s-1)}
+.grupo:focus-visible{outline:1px solid var(--madeira);outline-offset:3px}
+.grupo[aria-pressed="true"]{color:var(--madeira)}
+.grupo .rot{flex:1;font-size:var(--text-small)}
+/* a contagem de variantes é também o sinal de que a linha abre:
+   acende junto com o grupo aberto, e volta a sumir quando fecha */
+.grupo .qt{font-size:11px;letter-spacing:var(--ls-rotulo);opacity:.5;flex:none;
+  transition:opacity var(--dur) var(--ease)}
+.grupo[aria-expanded="true"] .qt{opacity:1;color:var(--madeira)}
+
+/* ── pilha de camadas ─────────────────────────────────────
+   O mesmo corte de todos os desenhos, reduzido a faixas. Acende
+   a que o detalhe escolhido toca — é o que ensina a ler as
+   pranchas como variações de uma coisa só.
+   ───────────────────────────────────────────────────────── */
+.pilha{margin:0;display:grid;gap:var(--s-2);align-self:start}
+.pilha svg{width:100%;height:auto;display:block;overflow:visible}
+.pilha .cam{transition:opacity var(--dur) var(--ease), fill var(--dur) var(--ease)}
+.pilha .rotulo-cam{
+  font-size:8px; letter-spacing:var(--ls-rotulo); fill:var(--apagado);
+  transition:fill var(--dur) var(--ease);
+}
+.pilha .cam.acesa .rotulo-cam{fill:var(--madeira)}
+.pilha .traco{stroke:var(--apagado);stroke-width:.6;fill:none;
+  transition:stroke var(--dur) var(--ease)}
+.pilha .cam.acesa .traco{stroke:var(--madeira)}
+/* mesma razão de .sec .corpo: área é tinta com alfa, não `--apagado` */
+.pilha .corpo{fill:var(--tinta);opacity:.1;
+  transition:opacity var(--dur) var(--ease),fill var(--dur) var(--ease)}
+.pilha .cam.acesa .corpo{fill:var(--madeira);opacity:.5}
+.legenda-pilha{font-size:var(--text-caption);color:var(--apagado);letter-spacing:var(--ls-corpo)}
+
+@media (max-width:900px){
+  /* o índice deixa de ser coluna e vira cabeçalho da prancha;
+     o resumo do escopo desce para depois dela, onde já é conclusão */
+  .tec{grid-template-columns:1fr;grid-template-areas:"amb" "idx" "vis" "esc" "pil";gap:var(--s-5)}
+  .pilha{max-width:340px}
+}
+
+/* ── cortes das etapas de pré-obra ────────────────────────
+   Mesma língua da pilha do detalhamento: corpo em tinta
+   rebaixada, traço fino, rótulo em caixa alta. A única cor é a
+   madeira, e ela marca o que a etapa muda — a manta, o plano
+   final, o poro selado. O desenho ocupa o lugar que era da foto,
+   e por isso respira dentro de uma moldura de papel.
+   ───────────────────────────────────────────────────────── */
+.lt-desenho{
+  display:grid; place-items:center; aspect-ratio:4/3;
+  background:var(--papel-2); padding:var(--s-4);
+}
+.sec{width:100%;height:auto;display:block;overflow:visible}
+.sec .traco{stroke:var(--apagado);stroke-width:.7;fill:none}
+.sec .fina{stroke:var(--apagado);stroke-width:.5;fill:none;opacity:.55}
+/* corpo é grafite sobre papel: tinta com alfa baixo, não o cinza do
+   texto. `--apagado` é claro demais para preencher área — serve para
+   traço e rótulo, onde é linha fina contra o papel. */
+.sec .corpo{fill:var(--tinta);opacity:.09}
+.sec .corpo-2{fill:var(--tinta);opacity:.17}
+.sec .madeira{fill:var(--madeira);opacity:.62}
+/* o traço grosso é sempre a peça que a etapa acrescenta */
+.sec .marca{stroke:var(--madeira);stroke-width:1.6;fill:none}
+.sec .rot{font-size:7px;letter-spacing:var(--ls-rotulo);fill:var(--apagado)}
+.sec .rot.forte{fill:var(--madeira)}
+
+@media (max-width:900px){
+  /* sem a coluna de texto ao lado, o corte pode ficar mais largo */
+  .lt-desenho{padding:var(--s-3);aspect-ratio:3/2}
+}
+
+/* ── piso elevado ─────────────────────────────────────────
+   Duas fotos da mesma cena, empilhadas e trocadas por
+   opacidade. O `.secao-cab` vem de site.css.
+   ───────────────────────────────────────────────────────── */
+.elev{padding-block:var(--s-9);border-top:1px solid var(--linha)}
+.secao-cab{
+  display:flex; align-items:baseline; justify-content:space-between;
+  gap:var(--s-4); margin-top:var(--s-3); padding-bottom:var(--s-3);
+  border-bottom:1px solid var(--linha);
+}
+.secao-cab h2{margin:0}
+.secao-marca{
+  font-size:11px; letter-spacing:var(--ls-rotulo); text-transform:uppercase;
+  color:var(--apagado); flex:none;
+}
+.elev .lead{color:var(--apagado);max-width:56ch;margin-top:var(--s-3);
+  font-size:clamp(var(--text-body),1.5vw,var(--text-body-lg))}
+
+.elev-palco{
+  position:relative; margin:var(--s-6) 0 0; overflow:hidden;
+  background:var(--papel-2); aspect-ratio:16/10; max-height:64svh;
+}
+.elev-palco img{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; opacity:0;
+  filter:saturate(.9) contrast(.98);
+  transition:opacity .5s var(--ease);
+}
+.elev-palco img.on{opacity:1}
+
+.elev-opcoes{display:flex;flex-wrap:wrap;gap:var(--s-4);margin-top:var(--s-3);
+  padding-top:var(--s-2);border-top:1px solid var(--linha)}
+.elev-op{
+  all:unset; cursor:pointer; color:var(--apagado); font-size:var(--text-small);
+  padding-bottom:2px; border-bottom:1px solid transparent;
+  transition:color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.elev-op:hover{color:var(--tinta)}
+.elev-op:focus-visible{outline:1px solid var(--madeira);outline-offset:3px}
+.elev-op[aria-pressed="true"]{color:var(--madeira);border-bottom-color:var(--madeira)}
+
+.elev-txt{margin-top:var(--s-4);display:grid;gap:var(--s-2);max-width:60ch}
+.elev-txt h3{font-weight:var(--peso-titulo);letter-spacing:var(--ls-titulo);line-height:1.15;
+  font-size:clamp(var(--text-h4),2.4vw,var(--text-h3))}
+.elev-txt p{color:var(--apagado);font-size:clamp(var(--text-small),1.2vw,var(--text-body))}
+/* a consequência na obra, que é o que vende segurança */
+.elev-txt .elev-imp{
+  color:var(--tinta); padding-left:var(--s-2);
+  border-left:1px solid var(--madeira); margin-top:var(--s-1);
+}
+.elev-txt .elev-imp b{
+  display:block; font-weight:var(--peso-rotulo); font-size:10px; letter-spacing:var(--ls-rotulo);
+  text-transform:uppercase; color:var(--madeira); margin-bottom:4px;
+}
+@media (max-width:768px){
+  .secao-cab{flex-direction:column;align-items:flex-start;gap:var(--s-1)}
+  .elev-palco{aspect-ratio:4/3}
+}

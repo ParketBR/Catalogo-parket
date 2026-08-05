@@ -1,0 +1,155 @@
+/* ─────────────────────────────────────────────────────────────
+   Seletor de paginação — a sala que troca de chão.
+   Compartilhado pela home e por piso.html.
+   ───────────────────────────────────────────────────────────── */
+/* proporção da foto do ambiente e a linha onde o piso encontra o
+   caixilho, em % da própria foto (1086×1448). É este polígono que
+   faz a troca de paginação mexer só no chão.
+
+   O traçado foi medido coluna a coluna nas cinco fotos, não
+   estimado: o recorte segue o MAIOR valor entre elas em cada x.
+   A direção do erro importa — se o corte passar acima da linha
+   real de uma paginação, é o caixilho DELA que vem colado por
+   cima do da sala, e a foto inteira parece pular. Abaixo, só
+   aparece uma nesga do piso da base. */
+:root{
+  --piso-prop:1086/1448;
+  --piso-recorte:polygon(
+    0% 43.2%,  6% 42.9%, 12% 42.5%, 19% 42.1%, 25% 42.0%,
+   34% 42.2%, 40% 42.3%, 45% 43.0%, 50% 44.6%, 55% 45.6%,
+   60% 46.9%, 65% 48.3%, 70% 49.2%, 75% 50.4%, 80% 51.6%,
+   85% 52.9%, 90% 54.7%, 95% 56.3%, 100% 57.0%,
+   100% 100%, 0% 100%);
+}
+
+/* ── paginação: a sala à esquerda, as opções à direita ───── */
+.pag{padding-block:var(--s-9) var(--s-10);border-top:1px solid var(--linha)}
+.pag h2{
+  font-weight:var(--peso-titulo); line-height:1.06; letter-spacing:var(--ls-titulo);
+  font-size:clamp(var(--text-h3),4.4vw,var(--text-h1));
+  margin-block:var(--s-3) var(--s-3); max-width:22ch;
+}
+.pag .lead{color:var(--apagado);max-width:56ch;
+  font-size:clamp(var(--text-body),1.5vw,var(--text-body-lg))}
+
+.pag-grade{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,.72fr);
+  gap:var(--s-7); align-items:stretch; margin-top:var(--s-8);
+}
+.previa{
+  position:relative; overflow:hidden; background:var(--papel-2);
+  box-shadow:0 1px 0 var(--linha); aspect-ratio:var(--piso-prop);
+}
+.previa .quadro{transition:opacity .5s var(--ease)}
+.previa figcaption{
+  position:absolute; inset:auto 0 0 0; z-index:3;
+  padding:var(--s-5) var(--s-3) var(--s-3);
+  font-size:var(--text-caption); letter-spacing:var(--ls-rotulo); text-transform:uppercase;
+  color:var(--claro); font-weight:300;
+  background:linear-gradient(transparent, rgba(var(--veu),.62));
+}
+
+/* as opções, e o texto da que está escolhida */
+.pag-lado{display:flex;flex-direction:column;gap:var(--s-4);align-self:center}
+.pag-lista{display:grid;gap:0;border-top:1px solid var(--linha)}
+.sub{
+  all:unset; cursor:pointer; display:flex; align-items:baseline; gap:var(--s-2);
+  padding:var(--s-2) 0; border-bottom:1px solid var(--linha);
+  color:var(--apagado);
+  transition:color var(--dur) var(--ease), padding-left var(--dur) var(--ease);
+}
+.sub:hover{color:var(--tinta);padding-left:var(--s-1)}
+.sub:focus-visible{outline:1px solid var(--madeira);outline-offset:3px}
+.sub[aria-pressed="true"]{color:var(--madeira)}
+.sub .rot{flex:1;font-size:var(--text-body);
+  font-size:clamp(var(--text-body-lg),2vw,var(--text-h4))}
+
+.pag-txt{display:grid;gap:var(--s-2);max-width:46ch}
+.pag-txt h3{font-weight:var(--peso-titulo);line-height:1.15;letter-spacing:var(--ls-titulo);
+  font-size:clamp(var(--text-h4),2.4vw,var(--text-h3))}
+.pag-txt p{color:var(--apagado);font-size:var(--text-small)}
+
+/* ── quadros empilhados ───────────────────────────────────
+   Um quadro por opção, todos montados de uma vez e trocados
+   por opacidade — nada recarrega na troca.
+   ───────────────────────────────────────────────────────── */
+.quadro{
+  position:absolute; inset:0; opacity:0;
+  transition:opacity .9s var(--ease); will-change:opacity;
+}
+.quadro.on{opacity:1}
+.quadro img{
+  width:100%; height:100%; object-fit:cover; display:block;
+  /* grade de unificação — fontes diferentes na mesma temperatura */
+  filter:saturate(.88) contrast(.98);
+}
+
+/* A troca de paginação mexe só no chão: o quadro de baixo segura a
+   sala, o de cima entra recortado no polígono do piso. Teto,
+   caixilho e vista não se mexem em nenhuma troca.
+
+   O recorte é em % da foto, então o enquadramento tem de ser o da
+   foto e não o do quadro: `.enq` cobre o quadro mantendo a
+   proporção da imagem. */
+.enq{
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:auto; height:auto; min-width:100%; min-height:100%;
+  aspect-ratio:var(--piso-prop);
+}
+.enq img{width:100%;height:100%}
+.enq.piso{clip-path:var(--piso-recorte)}
+
+/* ── varredura: o estilo novo é assentado sobre o antigo ───
+   A máscara em gradiente avança na direção da própria paginação:
+   no sentido da régua para a reta, no eixo do V para o chevron,
+   na diagonal para a espinha, e do centro para fora na tabeira e
+   no Versailles (que assim fecham pela moldura, como na obra).
+   ───────────────────────────────────────────────────────── */
+@property --varre{syntax:'<percentage>';inherits:false;initial-value:0%}
+
+/* O quadro escolhido fica na frente enquanto o antigo esmaece.
+   Sem isto, quem sai por último no DOM volta a cobrir quem entrou —
+   e a paginação nova pisca de volta para a antiga por meio segundo. */
+.previa .quadro.frente{z-index:2}
+
+.previa .quadro.assenta{
+  animation:varrer 1.15s var(--ease) forwards;
+  -webkit-mask-image:linear-gradient(var(--ang,0deg), #000 0 var(--varre), transparent calc(var(--varre) + 14%));
+          mask-image:linear-gradient(var(--ang,0deg), #000 0 var(--varre), transparent calc(var(--varre) + 14%));
+}
+.previa .quadro.assenta.radial{
+  -webkit-mask-image:radial-gradient(circle at 50% 50%, #000 0 var(--varre), transparent calc(var(--varre) + 14%));
+          mask-image:radial-gradient(circle at 50% 50%, #000 0 var(--varre), transparent calc(var(--varre) + 14%));
+}
+@keyframes varrer{from{--varre:0%}to{--varre:118%}}
+
+@media (max-width:900px){
+  .pag-grade{grid-template-columns:1fr;gap:var(--s-5)}
+}
+@media (max-width:768px){
+  .previa figcaption{letter-spacing:var(--ls-rotulo);padding:var(--s-5) var(--s-2) var(--s-2)}
+}
+
+/* ── quando a paginação abre o site ───────────────────────
+   Na home ela é a primeira coisa da página: o cabeçalho vem
+   acima da grade em vez de ao lado, e o recuo é o do topo.
+   ───────────────────────────────────────────────────────── */
+.topo-produto{padding-block:var(--s-11) var(--s-10);border-top:0}
+.topo-produto .pag-cab{margin-bottom:var(--s-8)}
+.topo-produto h1{
+  font-weight:var(--peso-titulo); line-height:1.04; letter-spacing:var(--ls-titulo);
+  font-size:clamp(var(--text-h2), 5.4vw, var(--text-h1));
+  margin-block:var(--s-4) var(--s-3); max-width:20ch;
+}
+.topo-produto .lead{color:var(--apagado);max-width:54ch;
+  font-size:clamp(var(--text-body),1.6vw,var(--text-body-lg))}
+
+.pag-ir{margin-top:var(--s-2)}
+.pag-ir a{
+  font-size:var(--text-caption); letter-spacing:var(--ls-rotulo); text-transform:uppercase;
+  color:var(--madeira); text-decoration:none;
+  padding-bottom:2px; border-bottom:1px solid var(--linha);
+  transition:border-color var(--dur) var(--ease);
+}
+.pag-ir a:hover{border-bottom-color:var(--madeira)}

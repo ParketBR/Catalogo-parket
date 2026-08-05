@@ -1,0 +1,594 @@
+/* ─────────────────────────────────────────────────────────────
+   Parket — base do site
+   Compartilhada pelas 11 páginas. Tokens, cabeçalho, rodapé,
+   home e o esqueleto das categorias.
+
+   ── de onde vêm os tokens ────────────────────────────────────
+   Da marca, não de gosto: os valores abaixo foram lidos do
+   parket.com.br, que é o site vivo da Parket. DM Sans em uma
+   família só, papel #FAF8F5, tinta #2A2A2A, e o acento é o
+   dourado fosco #9C8B6E — não o marrom saturado que este
+   protótipo usava antes.
+
+   Duas regras da marca que valem para tudo:
+   · nada de canto arredondado — border-radius é sempre 0;
+   · título grande é peso 200 com espaçamento POSITIVO. O tipo
+     é geométrico e aberto; apertar a letra descaracteriza.
+
+   Espaçamento só em múltiplos de 8.
+   ───────────────────────────────────────────────────────────── */
+:root{
+  --text-display:72px; --text-h1:56px; --text-h2:42px; --text-h3:32px; --text-h4:24px;
+  --text-body-lg:20px; --text-body:18px; --text-small:16px; --text-caption:14px;
+
+  --s-1:8px; --s-2:16px; --s-3:24px; --s-4:32px; --s-5:40px;
+  --s-6:48px; --s-7:64px; --s-8:80px; --s-9:96px; --s-10:120px; --s-11:160px;
+
+  --container:1400px;
+  --dur:.6s; --ease:cubic-bezier(.22,.61,.36,1);
+
+  /* ── cor ────────────────────────────────────────────────── */
+  --papel:#faf8f5;        /* fundo de página */
+  --papel-2:#f1eee9;      /* superfície um passo abaixo do papel */
+  --claro:#e8e4df;        /* texto e marca sobre foto */
+  --tinta:#2a2a2a;        /* texto */
+  --apagado:#8c8478;      /* texto secundário, rótulo, traço técnico */
+  --madeira:#9c8b6e;      /* o acento da marca */
+  --madeira-clara:#b5a48a;/* o mesmo acento, sobre foto */
+  --linha:#d9d3cb;        /* borda e régua */
+
+  /* crus, para compor alfa: véu sobre foto e texto claro sobre ela */
+  --veu:26,24,22;
+  --claro-rgb:232,228,223;
+
+  /* ── tipografia ─────────────────────────────────────────── */
+  --font:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --peso-titulo:200;      /* display, h1, h2 */
+  --peso-corpo:300;
+  --peso-rotulo:500;      /* versalete: precisa de peso para não sumir */
+  --ls-titulo:.02em;      /* positivo, sempre */
+  --ls-corpo:.01em;
+  --ls-rotulo:.12em;      /* todo versalete do site usa este */
+  --ls-numero:.06em;      /* preço e contagem, em tabular */
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--papel); color:var(--tinta);
+  font-family:var(--font); font-weight:var(--peso-corpo); font-size:var(--text-body);
+  line-height:1.6; letter-spacing:var(--ls-corpo); -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,p{margin:0}
+img{max-width:100%}
+a{color:inherit}
+::selection{background:var(--madeira);color:var(--papel)}
+
+.wrap{width:min(100% - var(--s-6)*2, var(--container));margin-inline:auto}
+
+/* título grande — o peso 200 da marca, com a letra aberta */
+.display{
+  font-weight:var(--peso-titulo); line-height:1.08;
+  letter-spacing:var(--ls-titulo);
+}
+/* o versalete da marca: 500 e .12em, em madeira. É o mesmo em
+   toda parte — quando precisar de um rótulo, use .kicker ou os
+   tokens, nunca um letter-spacing novo. */
+.kicker{
+  font-size:var(--text-caption); letter-spacing:var(--ls-rotulo);
+  text-transform:uppercase; color:var(--madeira); font-weight:var(--peso-rotulo);
+}
+
+/* ── cabeçalho ────────────────────────────────────────────
+   Transparente sobre o hero; ao rolar, ganha o papel de fundo
+   e uma linha. `.topo.claro` é para hero com foto escura.
+   ───────────────────────────────────────────────────────── */
+.topo{
+  position:fixed; inset:0 0 auto 0; z-index:40;
+  display:flex; align-items:center; justify-content:space-between; gap:var(--s-4);
+  padding:var(--s-3) var(--s-6);
+  font-size:11px; letter-spacing:var(--ls-rotulo); text-transform:uppercase;
+  font-weight:400; color:var(--apagado);
+  background:transparent; border-bottom:1px solid transparent;
+  transition:background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+             color var(--dur) var(--ease);
+}
+.topo.preso{background:var(--papel);border-bottom-color:var(--linha)}
+
+/* ── a marca ──────────────────────────────────────────────
+   O logotipo é imagem, não texto: a fonte dele não é a do site.
+   Vêm duas versões do mesmo arquivo (assets/logo-*.png, já
+   recortadas na caixa do traço) porque o cabeçalho vive sobre
+   dois fundos — foto escura no hero, papel depois de rolar. É
+   troca de opacidade, não de src: nada recarrega no meio da
+   transição do cabeçalho.
+   ───────────────────────────────────────────────────────── */
+.topo .marca{
+  display:block; flex:none; position:relative;
+  width:104px; height:22px; text-decoration:none;
+}
+.topo .marca img{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:contain; object-position:left center;
+  transition:opacity var(--dur) var(--ease);
+}
+.topo .marca .claro{opacity:0}
+.topo.claro:not(.preso) .marca .claro{opacity:1}
+.topo.claro:not(.preso) .marca .escuro{opacity:0}
+
+/* a navegação em si é estilizada em .menu, mais abaixo */
+.topo.claro,.topo.claro .menu a,.topo.claro .menu button{color:var(--madeira-clara)}
+.topo.claro.preso,.topo.claro.preso .menu a,.topo.claro.preso .menu button{color:var(--apagado)}
+
+/* ── atalho de teclado ────────────────────────────────────── */
+.pular{
+  position:fixed; top:0; left:0; z-index:60;
+  transform:translateY(-120%); transition:transform var(--dur) var(--ease);
+  background:var(--tinta); color:var(--papel); text-decoration:none;
+  padding:var(--s-2) var(--s-3);
+  font-size:var(--text-caption); letter-spacing:var(--ls-rotulo); text-transform:uppercase;
+}
+.pular:focus{transform:none}
+
+/* ── menu ─────────────────────────────────────────────────── */
+.menu{display:flex;gap:var(--s-4);align-items:center}
+.menu a,.menu button{
+  all:unset; cursor:pointer; color:inherit; padding-bottom:2px;
+  border-bottom:1px solid transparent; font:inherit;
+  letter-spacing:inherit; text-transform:inherit;
+  transition:color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.menu a:hover,.menu button:hover{color:var(--tinta)}
+.menu a:focus-visible,.menu button:focus-visible{outline:1px solid var(--madeira);outline-offset:4px}
+.menu a[aria-current="page"],.menu .abre-cat.ativo,
+.menu .abre-cat[aria-expanded="true"]{color:var(--madeira);border-bottom-color:var(--madeira)}
+.topo.claro .menu a:hover,.topo.claro .menu button:hover{color:var(--claro)}
+
+/* botão de gaveta — duas barras que viram X */
+.abre-menu{
+  all:unset; cursor:pointer; display:none; width:24px; height:16px;
+  position:relative; flex:none;
+}
+.abre-menu span{
+  position:absolute; left:0; right:0; height:1px; background:currentColor;
+  transition:transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+}
+.abre-menu span:first-child{top:3px}
+.abre-menu span:last-child{bottom:3px}
+.abre-menu[aria-expanded="true"] span:first-child{transform:translateY(4.5px) rotate(45deg)}
+.abre-menu[aria-expanded="true"] span:last-child{transform:translateY(-4.5px) rotate(-45deg)}
+.abre-menu:focus-visible{outline:1px solid var(--madeira);outline-offset:6px}
+
+/* ── gaveta de categorias (desktop) ─────────────────────────
+   Desce colada ao cabeçalho, com os nove pacotes em grade. */
+.gaveta-cat{
+  position:fixed; inset:0 0 auto 0; z-index:39;
+  padding-top:calc(var(--s-3)*2 + var(--text-caption));
+  background:var(--papel); border-bottom:1px solid var(--linha);
+  opacity:0; transform:translateY(-8px);
+  transition:opacity var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.gaveta-cat.on{opacity:1;transform:none}
+.gaveta-cat .wrap{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:0 var(--s-6); padding-block:var(--s-4) var(--s-5);
+}
+.gaveta-cat a{
+  display:flex; align-items:baseline; gap:var(--s-2);
+  padding:var(--s-2) 0; border-bottom:1px solid var(--linha);
+  text-decoration:none; color:var(--apagado);
+  transition:color var(--dur) var(--ease), padding-left var(--dur) var(--ease);
+}
+.gaveta-cat a:hover{color:var(--tinta);padding-left:var(--s-1)}
+.gaveta-cat a[aria-current="page"]{color:var(--madeira)}
+.gaveta-cat .cat-nome{flex:1;font-size:var(--text-body-lg);font-weight:var(--peso-titulo)}
+.gaveta-cat .cat-qtd{font-size:11px;letter-spacing:var(--ls-rotulo);opacity:.5;
+  font-variant-numeric:tabular-nums}
+
+/* ── gaveta de menu (toque) ─────────────────────────────────
+   Tela cheia: páginas em cima, catálogo embaixo. */
+.gaveta{
+  position:fixed; inset:0; z-index:38; overflow-y:auto;
+  background:var(--papel);
+  opacity:0; transition:opacity var(--dur) var(--ease);
+}
+.gaveta.on{opacity:1}
+.gaveta-int{
+  width:min(100% - var(--s-6)*2, var(--container)); margin-inline:auto;
+  padding-block:var(--s-11) var(--s-8); display:grid; gap:0;
+}
+.gaveta-int .kicker{margin-block:var(--s-5) var(--s-2)}
+.gaveta-int .kicker:first-child{margin-top:0}
+.gaveta a.g-pag,.gaveta a.g-cat{
+  display:flex; align-items:baseline; justify-content:space-between; gap:var(--s-3);
+  padding:var(--s-2) 0; border-bottom:1px solid var(--linha);
+  text-decoration:none; color:var(--tinta);
+}
+.gaveta a.g-pag{font-size:var(--text-h4);font-weight:var(--peso-titulo)}
+.gaveta a.g-cat{font-size:var(--text-body-lg);font-weight:var(--peso-titulo);color:var(--apagado)}
+.gaveta a[aria-current="page"]{color:var(--madeira)}
+.gaveta a.g-cat em{font-style:normal;font-size:11px;letter-spacing:var(--ls-rotulo);opacity:.5;
+  font-variant-numeric:tabular-nums}
+body.travado{overflow:hidden}
+
+/* o conteúdo começa abaixo do cabeçalho quando não há hero cheio */
+.recuo-topo{padding-top:var(--s-11)}
+
+/* ── hero de tela cheia ───────────────────────────────────
+   Foto sangrando, manifesto em serifado grande. O véu existe
+   para o texto ter contraste sem escurecer a foto inteira.
+   ───────────────────────────────────────────────────────── */
+.hero{
+  position:relative; min-height:100svh; display:flex; align-items:center;
+  overflow:hidden; color:var(--claro);
+}
+.hero-fundo{position:absolute;inset:0}
+.hero-fundo img{width:100%;height:100%;object-fit:cover;display:block;
+  filter:saturate(.88) contrast(.98)}
+/* Dois véus: um na diagonal, que dá contraste ao manifesto sem
+   escurecer a foto inteira; outro só na faixa de cima, porque é
+   ali que o cabeçalho transparente cai — e a janela costuma ser
+   a parte mais clara da imagem. */
+.hero-fundo::after{
+  content:""; position:absolute; inset:0;
+  background:
+    linear-gradient(to bottom, rgba(var(--veu),.5) 0%, rgba(var(--veu),.14) 14%, transparent 26%),
+    linear-gradient(100deg, rgba(var(--veu),.62) 0%, rgba(var(--veu),.3) 46%, rgba(var(--veu),.1) 100%);
+}
+.hero .wrap{position:relative;z-index:2;padding-block:var(--s-11) var(--s-9)}
+.hero .kicker{color:rgba(var(--claro-rgb),.66)}
+.hero h1{
+  font-weight:var(--peso-titulo); line-height:1.04; letter-spacing:var(--ls-titulo);
+  font-size:clamp(var(--text-h2), 6.4vw, 88px);
+  margin-block:var(--s-4) var(--s-4); max-width:17ch;
+}
+.hero .lead{color:rgba(var(--claro-rgb),.78);max-width:48ch;
+  font-size:clamp(var(--text-body),1.5vw,var(--text-body-lg))}
+.role{
+  position:absolute; inset:auto 0 var(--s-6) 0; z-index:2; text-align:center;
+  font-size:11px; letter-spacing:var(--ls-rotulo); text-transform:uppercase;
+  color:rgba(var(--claro-rgb),.5);
+}
+
+/* ── abertura de página interna (sem foto) ────────────────── */
+.abertura{padding-block:var(--s-11) var(--s-8)}
+.abertura h1{
+  font-weight:var(--peso-titulo); line-height:1.04; letter-spacing:var(--ls-titulo);
+  font-size:clamp(var(--text-h2), 6vw, var(--text-display));
+  margin-block:var(--s-4) var(--s-3); max-width:18ch;
+}
+.abertura .lead{color:var(--apagado);max-width:54ch;
+  font-size:clamp(var(--text-body),1.6vw,var(--text-body-lg))}
+
+.migalha{
+  display:flex; gap:var(--s-2); align-items:baseline;
+  font-size:var(--text-caption); letter-spacing:var(--ls-rotulo); text-transform:uppercase;
+  color:var(--apagado);
+}
+.migalha a{text-decoration:none;color:inherit;transition:color var(--dur) var(--ease)}
+.migalha a:hover{color:var(--madeira)}
+.migalha span{opacity:.4}
+
+/* ── catálogo na home ─────────────────────────────────────
+   Os 9 serviços como entradas. Cada um é um link para a sua
+   página: a foto acima, o nome e a contagem abaixo.
+   ───────────────────────────────────────────────────────── */
+.catalogo{padding-block:var(--s-10);border-top:1px solid var(--linha)}
+.catalogo h2{
+  font-weight:var(--peso-titulo); line-height:1.06; letter-spacing:var(--ls-titulo);
+  font-size:clamp(var(--text-h3), 4.4vw, var(--text-h1));
+  margin-block:var(--s-3) var(--s-3); max-width:22ch;
+}
+.catalogo .lead{color:var(--apagado);max-width:56ch;
+  font-size:clamp(var(--text-body),1.5vw,var(--text-body-lg))}
+
+.grade{
+  display:grid; grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--s-7) var(--s-6); margin-top:var(--s-9);
+}
+/* a primeira entrada ocupa duas colunas: é a única com acervo
+   completo, e a assimetria evita a leitura de tabela */
+.grade .cartao:first-child{grid-column:span 2}
+.grade .cartao:first-child .foto{aspect-ratio:16/10}
+
+.cartao{
+  display:flex; flex-direction:column; gap:var(--s-2);
+  text-decoration:none; color:inherit;
+}
+.cartao .foto{
+  position:relative; overflow:hidden; background:var(--papel-2);
+  aspect-ratio:4/3;
+}
+.cartao .foto img{
+  width:100%; height:100%; object-fit:cover; display:block;
+  filter:saturate(.88) contrast(.98);
+  transform:scale(1.01);
+  transition:transform 1.4s var(--ease), filter var(--dur) var(--ease);
+}
+.cartao:hover .foto img,.cartao:focus-visible .foto img{transform:scale(1.06)}
+.cartao:focus-visible{outline:1px solid var(--madeira);outline-offset:6px}
+.cartao .linha{
+  display:flex; align-items:baseline; gap:var(--s-2);
+  padding-top:var(--s-1); border-top:1px solid var(--linha);
+}
+.cartao .nome{
+  flex:1; font-weight:var(--peso-titulo);
+  font-size:clamp(var(--text-h4),2.2vw,var(--text-h3)); line-height:1.15;
+  transition:color var(--dur) var(--ease);
+}
+.cartao:hover .nome{color:var(--madeira)}
+.cartao .qtd{
+  font-size:11px; letter-spacing:var(--ls-rotulo); text-transform:uppercase;
+  color:var(--apagado); font-variant-numeric:tabular-nums; flex:none;
+}
+.cartao .resumo{color:var(--apagado);font-size:var(--text-small);max-width:44ch}
+/* marca a categoria cujo acervo já está desenhado */
+.cartao .selo{
+  font-size:10px; letter-spacing:var(--ls-rotulo); text-transform:uppercase;
+  color:var(--madeira);
+}
+
+/* ── etapas de uma categoria ──────────────────────────────
+   Alternadas: foto e texto trocam de lado a cada etapa.
+   ───────────────────────────────────────────────────────── */
+.etapas{padding-block:var(--s-9) var(--s-10);border-top:1px solid var(--linha)}
+.etapas-tit{
+  font-weight:var(--peso-titulo); line-height:1.06; letter-spacing:var(--ls-titulo);
+  font-size:clamp(var(--text-h3),4.4vw,var(--text-h1));
+  margin-block:var(--s-3) var(--s-3); max-width:22ch;
+}
+.etapas > .lead{color:var(--apagado);max-width:56ch;
+  font-size:clamp(var(--text-body),1.5vw,var(--text-body-lg));
+  margin-bottom:var(--s-6)}
+.etapa{
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:var(--s-7); align-items:center; padding-block:var(--s-7);
+  border-bottom:1px solid var(--linha);
+}
+.etapa:last-child{border-bottom:0}
+.etapa:nth-child(even) .etapa-foto{order:2}
+.etapa-foto{
+  position:relative; overflow:hidden; background:var(--papel-2);
+  aspect-ratio:5/4;
+}
+.etapa-foto img{width:100%;height:100%;object-fit:cover;display:block;
+  filter:saturate(.88) contrast(.98)}
+.etapa h3{
+  font-weight:var(--peso-titulo); line-height:1.1; letter-spacing:var(--ls-titulo);
+  font-size:clamp(var(--text-h4),3.2vw,var(--text-h2));
+  margin-block:var(--s-2) var(--s-3); max-width:20ch;
+}
+.etapa p{color:var(--apagado);max-width:44ch;
+  font-size:clamp(var(--text-small),1.3vw,var(--text-body))}
+.etapa .num{color:var(--madeira)}
+
+/* ── faixa de aviso ───────────────────────────────────────
+   Diz, sem rodeio, o que naquela página ainda é referência.
+   ───────────────────────────────────────────────────────── */
+.aviso{
+  display:flex; gap:var(--s-3); align-items:baseline;
+  padding:var(--s-3) var(--s-4); margin-top:var(--s-7);
+  background:var(--papel-2); color:var(--tinta);
+}
+.aviso b{
+  font-weight:var(--peso-rotulo); font-size:11px; letter-spacing:var(--ls-rotulo); text-transform:uppercase;
+  color:var(--madeira); flex:none;
+}
+.aviso p{font-size:var(--text-small);color:var(--apagado);max-width:64ch}
+
+/* ── navegação entre categorias ───────────────────────────── */
+.vizinhas{
+  display:flex; justify-content:space-between; gap:var(--s-4);
+  padding-block:var(--s-7); border-top:1px solid var(--linha);
+  font-size:var(--text-small);
+}
+.vizinhas a{
+  text-decoration:none; display:grid; gap:2px;
+  transition:color var(--dur) var(--ease);
+}
+.vizinhas a:hover{color:var(--madeira)}
+.vizinhas a:last-child{text-align:right}
+.vizinhas .rot{font-size:11px;letter-spacing:var(--ls-rotulo);text-transform:uppercase;color:var(--apagado)}
+
+/* ── rodapé ───────────────────────────────────────────────── */
+.rodape{
+  border-top:1px solid var(--linha); padding-block:var(--s-8) var(--s-6);
+  display:grid; gap:var(--s-6);
+}
+.rodape .colunas{
+  display:grid; grid-template-columns:1.5fr repeat(3,minmax(0,1fr));
+  gap:var(--s-6);
+}
+.rodape .nota{font-size:var(--text-small);color:var(--apagado);max-width:34ch;margin-top:var(--s-2)}
+.rodape .frase{
+  font-weight:var(--peso-titulo);
+  font-size:clamp(var(--text-h4),2.6vw,var(--text-h3));
+  line-height:1.15; max-width:16ch;
+}
+.rodape h4{
+  font-size:11px; letter-spacing:var(--ls-rotulo); text-transform:uppercase;
+  color:var(--apagado); font-weight:300; margin-bottom:var(--s-2);
+}
+.rodape ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.rodape a{text-decoration:none;font-size:var(--text-small);color:var(--apagado);
+  transition:color var(--dur) var(--ease)}
+.rodape a:hover{color:var(--tinta)}
+.rodape .base{
+  display:flex; justify-content:space-between; gap:var(--s-3); flex-wrap:wrap;
+  padding-top:var(--s-4); border-top:1px solid var(--linha);
+  font-size:11px; letter-spacing:var(--ls-rotulo); text-transform:uppercase; color:var(--apagado);
+}
+
+@media (max-width:1000px){
+  .grade{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grade .cartao:first-child{grid-column:span 2}
+  .rodape .colunas{grid-template-columns:1fr 1fr}
+  .rodape .frase{grid-column:1 / -1}
+}
+/* abaixo de 900px o menu inteiro não cabe na barra */
+@media (max-width:900px){
+  .menu{display:none}
+  .abre-menu{display:block}
+  .gaveta-cat{display:none}
+}
+@media (max-width:768px){
+  :root{--s-6:24px}
+  .topo{padding:var(--s-3) var(--s-3);gap:var(--s-3);letter-spacing:var(--ls-rotulo)}
+  .menu{gap:var(--s-3)}
+  /* na vertical o texto cai sobre o piso, que é a parte clara da
+     foto: o véu deixa de ser diagonal e passa a vir de baixo */
+  .hero-fundo::after{
+    background:
+      linear-gradient(to bottom, rgba(var(--veu),.5) 0%, rgba(var(--veu),.14) 12%, transparent 22%),
+      linear-gradient(to top, rgba(var(--veu),.72) 0%, rgba(var(--veu),.52) 46%, rgba(var(--veu),.2) 78%);
+  }
+  .hero h1{font-size:clamp(34px,8.4vw,var(--text-h2))}
+  .abertura h1{font-size:clamp(32px,7.6vw,var(--text-h2))}
+  .grade{grid-template-columns:1fr;gap:var(--s-6)}
+  .grade .cartao:first-child{grid-column:auto}
+  .grade .cartao:first-child .foto{aspect-ratio:4/3}
+  .etapa{grid-template-columns:1fr;gap:var(--s-3)}
+  .etapa:nth-child(even) .etapa-foto{order:0}
+  .rodape .colunas{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important}
+}
+
+/* ── página de texto (sobre) ──────────────────────────────── */
+.texto{padding-block:var(--s-8) var(--s-10);border-top:1px solid var(--linha);
+  display:grid;gap:var(--s-9)}
+.texto-bloco{display:grid;gap:var(--s-3);max-width:64ch}
+.texto-bloco h2{
+  font-weight:var(--peso-titulo); line-height:1.1; letter-spacing:var(--ls-titulo);
+  font-size:clamp(var(--text-h4),3.4vw,var(--text-h2)); max-width:22ch;
+}
+.texto-bloco p{color:var(--apagado);
+  font-size:clamp(var(--text-small),1.3vw,var(--text-body-lg))}
+.texto-bloco a{color:var(--madeira);text-decoration:none;
+  border-bottom:1px solid var(--linha);transition:border-color var(--dur) var(--ease)}
+.texto-bloco a:hover{border-bottom-color:var(--madeira)}
+
+/* ── obras ────────────────────────────────────────────────── */
+.obras{padding-block:var(--s-8) var(--s-9);border-top:1px solid var(--linha);
+  display:grid;gap:var(--s-10)}
+.obra{display:grid;gap:var(--s-6)}
+.obra-capa{margin:0;overflow:hidden;background:var(--papel-2);aspect-ratio:16/9}
+.obra-capa img{width:100%;height:100%;object-fit:cover;display:block;
+  filter:saturate(.88) contrast(.98)}
+.obra-txt{display:grid;gap:var(--s-2);max-width:60ch}
+.obra-txt h2{
+  font-weight:var(--peso-titulo); line-height:1.1; letter-spacing:var(--ls-titulo);
+  font-size:clamp(var(--text-h4),3.4vw,var(--text-h2));
+}
+.obra-txt p{color:var(--apagado);font-size:clamp(var(--text-small),1.3vw,var(--text-body))}
+.obra-pac{display:flex;flex-wrap:wrap;gap:var(--s-1) var(--s-2);margin-top:var(--s-1)}
+.obra-pac span{
+  font-size:11px; letter-spacing:var(--ls-rotulo); text-transform:uppercase;
+  color:var(--madeira); border:1px solid var(--linha); padding:4px var(--s-2);
+}
+.obra-gal{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s-2)}
+.obra-gal figure{margin:0;overflow:hidden;background:var(--papel-2);aspect-ratio:1/1}
+.obra-gal img{width:100%;height:100%;object-fit:cover;display:block;
+  filter:saturate(.88) contrast(.98)}
+
+/* ── chamada de fim de página ─────────────────────────────── */
+.chamada{
+  padding-block:var(--s-10); border-top:1px solid var(--linha);
+  display:grid; gap:var(--s-3); justify-items:start;
+}
+.frase-grande{
+  font-weight:var(--peso-titulo); line-height:1.06; letter-spacing:var(--ls-titulo);
+  font-size:clamp(var(--text-h3),4.4vw,var(--text-h1)); max-width:20ch;
+}
+.acoes{display:flex;flex-wrap:wrap;gap:var(--s-2);margin-top:var(--s-3)}
+.botao{
+  display:inline-block; text-decoration:none;
+  padding:var(--s-2) var(--s-5); border:1px solid var(--tinta);
+  font-size:var(--text-caption); letter-spacing:var(--ls-rotulo); text-transform:uppercase;
+  background:var(--tinta); color:var(--papel);
+  transition:background var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.botao:hover{background:transparent;color:var(--tinta)}
+.botao.vazado{background:transparent;color:var(--tinta)}
+.botao.vazado:hover{background:var(--tinta);color:var(--papel)}
+.botao:focus-visible{outline:1px solid var(--madeira);outline-offset:4px}
+
+@media (max-width:768px){
+  .obra-gal{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .acoes{width:100%}
+  .acoes .botao{flex:1;text-align:center;letter-spacing:var(--ls-rotulo)}
+}
+
+/* ── linha do tempo ───────────────────────────────────────
+   O percurso inteiro numa tela: um nó por etapa sobre uma
+   linha contínua, e o detalhe abre por clique embaixo. Serve
+   quando o valor está em ver que são poucas e sequenciais —
+   em fileiras alternadas as cinco ocupavam cinco telas.
+   ───────────────────────────────────────────────────────── */
+.linha-tempo{margin-top:var(--s-8)}
+.lt-trilho{
+  display:grid; grid-auto-flow:column; grid-auto-columns:1fr;
+  gap:var(--s-3); position:relative;
+}
+/* a linha corre atrás dos nós, do primeiro ao último */
+.lt-trilho::before{
+  content:""; position:absolute; left:0; right:0; top:7px;
+  height:1px; background:var(--linha);
+}
+.lt-no{
+  all:unset; cursor:pointer; position:relative;
+  display:grid; gap:6px; align-content:start; padding-bottom:var(--s-2);
+}
+.lt-bola{
+  width:15px; height:15px; border-radius:999px;
+  border:1px solid var(--apagado); background:var(--papel);
+  transition:border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+.lt-ord{
+  font-size:11px; letter-spacing:var(--ls-rotulo); color:var(--apagado);
+  font-variant-numeric:tabular-nums; margin-top:var(--s-2);
+  transition:color var(--dur) var(--ease);
+}
+.lt-nome{
+  font-weight:var(--peso-titulo); line-height:1.2; color:var(--tinta);
+  font-size:clamp(var(--text-body),1.5vw,var(--text-h4));
+  transition:color var(--dur) var(--ease);
+}
+.lt-nota{font-size:var(--text-caption);color:var(--apagado)}
+.lt-no:hover .lt-bola{border-color:var(--tinta)}
+.lt-no:hover .lt-nome{color:var(--madeira)}
+.lt-no:focus-visible{outline:1px solid var(--madeira);outline-offset:4px}
+.lt-no[aria-pressed="true"] .lt-bola{background:var(--madeira);border-color:var(--madeira)}
+.lt-no[aria-pressed="true"] .lt-ord,
+.lt-no[aria-pressed="true"] .lt-nome{color:var(--madeira)}
+
+/* o detalhe da etapa aberta */
+.lt-painel{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:var(--s-7); align-items:center;
+  margin-top:var(--s-7); padding-top:var(--s-6);
+  border-top:1px solid var(--linha);
+}
+.lt-foto{margin:0;overflow:hidden;background:var(--papel-2);aspect-ratio:4/3}
+.lt-foto img{width:100%;height:100%;object-fit:cover;display:block;
+  filter:saturate(.88) contrast(.98)}
+.lt-txt{display:grid;gap:var(--s-2)}
+.lt-txt h3{
+  font-weight:var(--peso-titulo); line-height:1.1; letter-spacing:var(--ls-titulo);
+  font-size:clamp(var(--text-h4),3vw,var(--text-h2)); max-width:20ch;
+}
+.lt-txt p{color:var(--apagado);max-width:44ch;
+  font-size:clamp(var(--text-small),1.3vw,var(--text-body))}
+
+@media (max-width:900px){
+  /* na vertical a linha vira coluna: os nós descem um sob o outro */
+  .lt-trilho{grid-auto-flow:row;gap:0}
+  .lt-trilho::before{left:7px;right:auto;top:0;bottom:0;width:1px;height:auto}
+  .lt-no{grid-template-columns:15px 1fr;gap:0 var(--s-3);
+    align-items:center;padding-block:var(--s-2)}
+  .lt-bola{grid-row:1 / span 3}
+  .lt-ord{margin-top:0}
+  .lt-painel{grid-template-columns:1fr;gap:var(--s-4)}
+}

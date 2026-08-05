@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Definição Técnica · Parket</title>
+<meta name="description" content="Central do cliente: defina as características técnicas de cada ambiente da obra, ambiente por ambiente.">
+<meta name="robots" content="noindex">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Parket">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Definição Técnica · Parket">
+<meta property="og:description" content="Central do cliente: defina as características técnicas de cada ambiente da obra.">
+<meta name="theme-color" content="#faf8f5">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/icone/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,200;9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/projeto.css">
+</head>
+<body>
+
+<main>
+  <!-- ───────────── definição técnica ─────────────
+       A Central do Cliente. Os ambientes vêm do contrato; para
+       cada um, o cliente resolve as definições técnicas por
+       assunto, e o que ele marca vira o pré-projeto.
+
+       Duas coisas que a tela assume e diz em voz alta:
+       · nada é global — a mesma obra tem piso aquecido num
+         ambiente e não tem no outro;
+       · transição é lista, não campo — um ambiente encosta em
+         vários outros e cada encontro se resolve sozinho.
+
+       Nesta versão não há servidor: as escolhas ficam no
+       navegador. Onde o sistema gravaria ou emitiria documento,
+       a tela mostra o conteúdo e declara o que faria.
+       ───────────────────────────────────────────── -->
+  <section class="def wrap" id="def">
+    <p class="migalha"><a href="index.html">Catálogo</a><span>/</span>Central do cliente</p>
+    <h1 class="display" style="font-size:clamp(var(--text-h3),4.4vw,var(--text-h1));max-width:22ch">Cada ambiente decide o seu próprio piso.</h1>
+    <p class="lead" style="color:var(--apagado);max-width:58ch;margin-top:var(--s-3);font-size:clamp(var(--text-body),1.5vw,var(--text-body-lg))">
+      Os ambientes abaixo vieram do contrato. Escolha um e resolva as definições
+      técnicas dele — estrutura, aquecimento, rodapé, recortes e cada transição
+      com os vizinhos. O que for marcado aqui é o que a equipe de projetos executa.
+    </p>
+
+    <div id="definicao"></div>
+  </section>
+</main>
+
+<footer data-rodape></footer>
+
+<script src="assets/dados.js"></script>
+<script src="assets/ambientes.js"></script>
+<script src="assets/precos.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/projeto.js"></script>
+</body>
+</html>

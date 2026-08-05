@@ -1,0 +1,32 @@
+/* ─────────────────────────────────────────────────────────────
+   Forro — o escopo. Os chips de ambiente, a linha de item e o
+   resumo vêm de escopo.css; aqui fica só o que é próprio daqui.
+
+   A diferença para o piso: não há prancha, então a lista ocupa a
+   largura toda e o resumo vira coluna ao lado. E há quantidade,
+   porque o preço de forro é por unidade ou metro — sem ela o
+   número não fecha, e o site não finge que fecha.
+   ───────────────────────────────────────────────────────────── */
+.fr-tec{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,.4fr);
+  grid-template-areas:"amb esc" "lis esc";
+  gap:var(--s-5) var(--s-7); margin-top:var(--s-8); align-items:start;
+}
+.fr-tec .ambientes{grid-area:amb}
+.fr-lista{grid-area:lis;display:grid;gap:0}
+.fr-tec .escopo{grid-area:esc;position:sticky;top:var(--s-9)}
+
+/* a linha do item: marca, nome, preço unitário */
+.fr-lista .esc-linha{
+  grid-template-columns:auto minmax(0,1fr) auto;
+  padding:var(--s-1) 0;
+}
+.fr-nome{font-size:var(--text-small);color:var(--apagado);transition:color var(--dur) var(--ease)}
+.esc-linha.on .fr-nome{color:var(--tinta)}
+.fr-lista .esc-ondes{padding-left:calc(11px + var(--s-2))}
+
+@media (max-width:900px){
+  .fr-tec{grid-template-columns:1fr;grid-template-areas:"amb" "lis" "esc";gap:var(--s-5)}
+  .fr-tec .escopo{position:static}
+}

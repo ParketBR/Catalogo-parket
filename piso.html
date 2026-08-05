@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Piso de Madeira · Parket</title>
+<meta name="description" content="Dezesseis detalhes desenhados do pacote de piso, do contrapiso ao rodapé, e o que a obra faz antes da madeira.">
+<link rel="canonical" href="https://parket.com.br/piso.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Parket">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:url" content="https://parket.com.br/piso.html">
+<meta property="og:title" content="Piso de Madeira · Parket">
+<meta property="og:description" content="Dezesseis detalhes desenhados do pacote de piso, do contrapiso ao rodapé, e o que a obra faz antes da madeira.">
+<meta property="og:image" content="https://parket.com.br/piso/reta.webp">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#faf8f5">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/icone/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,200;9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="stylesheet" href="assets/escopo.css">
+<link rel="stylesheet" href="assets/piso.css">
+</head>
+<body>
+
+<main>
+  <!-- Da abertura sobrou a migalha: a página entra direto na escolha.
+       O título de primeiro nível passou a ser o do detalhamento. -->
+  <section class="abertura so-migalha wrap">
+    <p class="migalha"><a href="index.html">Catálogo</a><span>/</span>Piso de madeira</p>
+  </section>
+
+  <!-- ───────────── detalhamento ─────────────
+       Abre a página: é a escolha que o cliente vem fazer. São os
+       16 desenhos que são decisão de projeto. O SVG da pilha é
+       escrito à mão para falar a mesma língua dos DXF: traço fino,
+       rótulo em caixa alta, linha de chamada. Ele não ilustra um
+       detalhe — mostra a seção que todos eles compartilham.
+
+       A ordem da página segue daqui: escolher (detalhamento),
+       aprofundar (piso elevado) e só então o que a obra faz por
+       baixo (pré-projeto). O que se decide vem antes do que se
+       executa.
+
+       Paginação, sistema de instalação e início de paginação não
+       entram como prancha: os dois primeiros são decisão de planta
+       e o terceiro é a própria pilha. Ficam no texto, sem imagem.
+       ───────────────────────────────────────── -->
+  <section class="detalhe" id="detalhe">
+    <div class="wrap">
+      <p class="kicker">Detalhamento</p>
+      <h1>Dezesseis desenhos, uma seção só.</h1>
+      <p class="lead">Toda prancha deste pacote é a mesma seção — contrapiso regularizado, cola PU e assoalho Parket apoiado em toda a face, sem vão e sem sarrafo, que é o que dá o som cheio ao pisar. Do contrapiso ao rodapé, o que muda de uma para a outra é uma coisa só de lugar. Escolha o detalhe à esquerda: a pilha ao lado acende a camada em que ele mexe.</p>
+
+      <p class="fora">Duas decisões não viram desenho nesta lista porque são de planta, e não de corte. A primeira é a paginação — reta, chevron, espinha de peixe, tabeira, versailles ou wood + marble: nenhuma delas muda a seção; mudam o corte, a perda e o ponto de partida. A segunda é esse ponto de partida. De onde sai a primeira régua definem-se o sentido das emendas, a régua que sobra na parede oposta e onde caem os cortes contra portas e soleiras. Marca-se no projeto; na obra já é tarde.</p>
+
+      <div class="tec">
+        <div class="tec-col">
+          <!-- os cômodos da obra; tudo abaixo é marcado dentro deles -->
+          <div class="ambientes" id="ambientes"></div>
+
+          <nav class="tec-idx" id="tec-idx" aria-label="Detalhes de piso"></nav>
+
+          <!-- o que foi marcado no índice, por ambiente. Montado por escopo.js -->
+          <aside class="escopo" id="escopo" aria-label="Escopo escolhido" aria-live="polite"></aside>
+
+          <figure class="pilha" id="pilha">
+            <svg viewBox="0 0 240 118" role="img"
+                 aria-label="Seção comum a todas as pranchas: contrapiso regularizado, cola PU e assoalho Parket">
+              <!-- encontro: a borda onde o piso topa com outra coisa -->
+              <g class="cam" data-cam="encontro" opacity="0">
+                <path class="traco" d="M112 30 V106" stroke-dasharray="3 3"/>
+                <path class="traco" d="M116 30 H140"/>
+                <text class="rotulo-cam" x="144" y="33">NA BORDA</text>
+              </g>
+              <!-- assoalho -->
+              <g class="cam" data-cam="assoalho">
+                <rect class="corpo" x="4" y="44" width="108" height="12"/>
+                <rect class="traco" x="4" y="44" width="108" height="12"/>
+                <path class="traco" d="M116 50 H140"/>
+                <text class="rotulo-cam" x="144" y="53">ASSOALHO</text>
+              </g>
+              <!-- cola: linha fina, rótulo puxado para baixo na diagonal
+                   como nas linhas de chamada do próprio DXF -->
+              <g class="cam" data-cam="cola">
+                <rect class="corpo" x="4" y="56" width="108" height="5"/>
+                <rect class="traco" x="4" y="56" width="108" height="5"/>
+                <path class="traco" d="M116 58.5 L134 66 H140"/>
+                <text class="rotulo-cam" x="144" y="69">COLA PU</text>
+              </g>
+              <!-- contrapiso: encosta na cola, para que a pilha siga
+                   fechada quando não há camada intercalada -->
+              <g class="cam" data-cam="contrapiso">
+                <rect class="corpo" x="4" y="61" width="108" height="45"/>
+                <rect class="traco" x="4" y="61" width="108" height="45"/>
+                <path class="traco" d="M116 95 L134 100 H140"/>
+                <text class="rotulo-cam" x="144" y="103">CONTRAPISO</text>
+              </g>
+              <!-- intercalada: barrote, suporte telescópico ou tubulação
+                   aquecida. Assenta sobre o topo do contrapiso. -->
+              <g class="cam" data-cam="entre" opacity="0">
+                <rect class="corpo" x="4" y="61" width="108" height="11"/>
+                <rect class="traco" x="4" y="61" width="108" height="11"/>
+                <path class="traco" d="M116 66.5 L134 82 H140"/>
+                <text class="rotulo-cam" x="144" y="85">INTERCALADA</text>
+              </g>
+            </svg>
+            <figcaption class="legenda-pilha" id="pilha-nota"></figcaption>
+          </figure>
+        </div>
+
+        <div class="tec-vis">
+          <figure class="prancha" id="prancha"></figure>
+          <div class="tec-var" id="tec-var" role="group" aria-label="Variantes do detalhe"></div>
+          <div class="tec-txt" id="tec-txt"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────── piso elevado ─────────────
+       Vem logo depois do índice porque é o desdobramento de um
+       item dele — o 2.4, que ali é traço e aqui é foto. As duas
+       são a mesma cena, do mesmo ponto: o pedestal preto aparece
+       nas duas, e só a viga em cima dele troca. Por isso a
+       comparação é feita por troca no mesmo lugar, e não lado a
+       lado — o olho fica parado e vê o que mudou.
+       ───────────────────────────────────────── -->
+  <section class="elev wrap" id="elevado">
+    <p class="kicker">Piso elevado</p>
+    <div class="secao-cab">
+      <h2 class="etapas-tit">O pedestal é o mesmo. A viga é que muda.</h2>
+      <span class="secao-marca">Duas estruturas</span>
+    </div>
+    <p class="lead">Dos dezesseis detalhes, este é o que mais mexe no prédio — por isso ganha foto e não só corte. Os dois sistemas partem do mesmo apoio regulável sobre a laje. O que os separa é o que se apoia em cima dele, e é essa peça que decide altura, vão e prazo.</p>
+
+    <figure class="elev-palco">
+      <img src="assets/render/elevado-barrote.jpg" alt="Piso elevado com barrote de madeira sobre pedestais" data-elev="barrote" class="on" loading="lazy" decoding="async">
+      <img src="assets/render/elevado-metalica.jpg" alt="Piso elevado com estrutura metálica sobre pedestais" data-elev="metalica" loading="lazy" decoding="async">
+    </figure>
+
+    <div class="elev-opcoes" role="group" aria-label="Estrutura do piso elevado">
+      <button class="elev-op" type="button" data-ir="barrote" aria-pressed="true">Barrote de madeira</button>
+      <button class="elev-op" type="button" data-ir="metalica" aria-pressed="false">Estrutura metálica</button>
+    </div>
+
+    <div class="elev-txt" id="elev-txt"></div>
+  </section>
+
+  <!-- ───────────── antes da madeira ─────────────
+       As cinco etapas de pré-obra, em corte desenhado (secoes.js).
+       Vêm de SERVICOS — a mesma fonte que alimenta a home.
+
+       Fecham a página de propósito: primeiro o que se escolhe e
+       quanto custa, depois o trabalho que ninguém vê e que é o
+       que sustenta o preço.
+       ───────────────────────────────────────────── -->
+  <section class="etapas wrap">
+    <p class="kicker">Pré-projeto de obra</p>
+    <div class="secao-cab">
+      <h2 class="etapas-tit">Antes da régua, o contrapiso.</h2>
+      <span class="secao-marca">Clique em cada etapa</span>
+    </div>
+    <p class="lead">Nada do que você escolheu acima sobrevive a uma base mal preparada. Estas cinco etapas acontecem antes de a madeira entrar na obra — e nenhuma tem segunda chance depois do piso instalado.</p>
+    <!-- só as cinco de pré-obra: paginação e rodapé têm seção própria -->
+    <div id="etapas" data-limite="5" data-formato="linha"></div>
+  </section>
+
+  <nav class="vizinhas wrap" id="vizinhas" aria-label="Outras categorias"></nav>
+</main>
+
+<footer data-rodape></footer>
+
+<script>
+/* ── piso elevado ────────────────────────────────────────────
+   Duas fotos empilhadas, trocadas por opacidade. Nada recarrega:
+   a cena é a mesma, e o corte entre uma e outra tem de ser
+   instantâneo para o olho ver a viga trocar. */
+(function(){
+  'use strict';
+  var palco = document.querySelector('.elev-palco');
+  if (!palco) return;
+
+  var TEXTO = {
+    barrote:{
+      t:'Barrote de madeira',
+      p:'Viga de seção cheia apoiada sobre os pedestais. É a estrutura mais alta das duas, e a que aceita vão maior entre apoios.',
+      i:'O nível final do piso sobe mais. Portas, soleiras e transições precisam entrar na cota antes de a obra subir.'
+    },
+    metalica:{
+      t:'Estrutura metálica',
+      p:'Perfil de aço galvanizado, seção bem mais fina e baixa que o barrote, parafusado sobre os mesmos pedestais.',
+      i:'Ganha altura menor com a mesma capacidade. É a saída quando o pé-direito ou a cota da soleira não deixam o piso subir.'
+    }
+  };
+
+  var fotos = [].slice.call(palco.querySelectorAll('[data-elev]'));
+  var botoes = [].slice.call(document.querySelectorAll('.elev-op'));
+  var txt = document.getElementById('elev-txt');
+
+  function ver(id){
+    fotos.forEach(function(f){ f.classList.toggle('on', f.dataset.elev === id); });
+    botoes.forEach(function(b){ b.setAttribute('aria-pressed', String(b.dataset.ir === id)); });
+    var d = TEXTO[id];
+    txt.innerHTML = '<h3>' + d.t + '</h3><p>' + d.p + '</p>' +
+      '<p class="elev-imp"><b>O que isso decide</b>' + d.i + '</p>';
+  }
+
+  botoes.forEach(function(b){
+    b.addEventListener('click', function(){ ver(b.dataset.ir); });
+  });
+  ver('barrote');
+})();
+</script>
+
+<script src="assets/dados.js"></script>
+<!-- os cortes das etapas de pré-obra; categoria.js os prefere à foto -->
+<script src="assets/secoes.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/categoria.js"></script>
+<script src="assets/detalhamento.js"></script>
+<!-- escopo.js enriquece o índice que detalhamento.js montou: vem depois -->
+<script src="assets/precos.js"></script>
+<script src="assets/escopo.js"></script>
+</body>
+</html>
